@@ -1,0 +1,186 @@
+Install Anaconda:
+1. goto website: https://www.anaconda.com/distribution/
+2. Download anaconda and install
+3. Active Jupyter:
+	Open anaconda terminal write command 
+	->jupyter notebook
+
+	Open automiticly browser : http://localhost:8888/
+
+4. Select dasktop-> click New -> click Python 3 -> click Untitle and rename 'HelloWorld' -> print('Hello World')
+
+5. Goto : https://www.kaggle.com/
+
+	Search: video games sales
+		and download csv file
+
+	put csv file in dasktop
+
+6. write code in jupyter
+	import pandas as pd
+	df = pd.read_csv('vgsales.csv')
+	df
+
+	df.shape
+
+	df.describe()
+
+	df.values
+
+
+
+7. Jupyter shortcut
+	Esc = for command mode
+	h = all shortcut command
+	a = insert row above
+	b = insert row below
+	
+
+8. Run all cell
+	Menu: cell->Run all cell
+
+
+
+==========Django Project==============
+1. Open PyCharm and Create new project (PyShop)
+
+2. Open Terminal and Install Django
+	->pip install django==2.1(version)  ->control+l(for clean terminal)
+
+3. Django Project Create
+	->django-admin startproject pyshop . (. for parants diractory)
+
+4. Run Local Server
+	->python manage.py runserver (Ctrl+c for off server)
+
+5. Create application
+	->python manage.py startapp products
+
+6. Hello World Print
+
+	-go to products dir - open views -  
+		from django.http import HttpResponse
+		from django.shortcuts import render
+
+
+		def index(request):
+    			return HttpResponse('Hello World')
+
+	-create (urls.py) in products dir
+
+	-Write code in urls
+		from django.urls import path
+		from . import views
+
+
+		urlpatterns = [
+	    		path('', views.index),
+    			path('new', views.new)
+		]
+
+
+7. Go to myshop and open urls.py
+	-Write code
+		from django.contrib import admin
+		from django.urls import path, include
+
+		urlpatterns = [
+    			path('admin/', admin.site.urls),
+    			path('products/', include('products.urls')),
+		]
+		
+
+
+=======Database Use in Python===========
+
+8. Download SQLITE3 From: https://sqlitebrowser.org/
+	-Install this app
+	-Drag and Drop SQLITE3 file from MyShop Dir
+
+9. Create Model
+	-Open models.py from products dir
+	-Write code
+		from django.db import models
+
+
+		class Product(models.Model):
+ 		name = models.CharField(max_length=255)
+		price = models.FloatField()
+    		stock = models.IntegerField()
+    		image_url = models.CharField(max_length=2083)
+
+10. Open settings.py from pyshop dir
+	-Write code
+		'products.apps.ProductsConfig',
+
+11. Open terminal
+	->python manage.py makemigrations (for create migration file)
+	->python manage.py migrate (for create database)
+
+========Admin Panel ==============
+12. Go to http://127.0.0.1:8000/admin (for admin login form- its default in django)
+
+13. Create Super User
+	->python manage.py createsuperuser
+	->admin (give username)
+	->arafat2892@gmail.com (email)
+	->1234 (give password)
+	->1234 (give again password)
+	Now login admin panel
+
+14. Register Product Model
+	Goto Product dir and open admin.py
+	wirte code
+	from django.contrib import admin
+	from .models import Product
+
+	admin.site.register(Product)
+
+
+
+
+15. Customize the admin area
+
+
+
+16. Templates
+	-create dir in products dir 'templates'
+	-create index.html in templates dir
+	-Go to view.py and write function
+
+	def index(request):
+    	products = Product.objects.all()
+    	return render(request, 'index.html',
+                  {'products': products})
+
+	-Go to index.html and write code
+	{% for product in products %}
+        <li>{{ product.name }}</li>
+    	{% endfor %}
+	
+
+
+17. Adding Bootstrap
+	-Create base.html in templates dir
+	-Paste html + boostrap cdn link and code
+	-Write python code in body
+	{% block content %}
+	{% endblock %}
+
+	-Goto index.html and write python code
+		{% extends 'base.html' %}
+
+		{% block content %}
+			html code write here......
+		{% endblock %}
+	
+
+18. Create Reusable base.html
+	-create templates dir in PyShop dir
+	-move base.html from products/templates dir to templates dir
+	-goto pyshop and open settings.py and write code in 58+- num lines
+	
+	'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
+		
